@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       title: "WhereTo?",
       home: AuthScreen(),
       routes: {
+        //add routes to your pages here
 
       },
     );
