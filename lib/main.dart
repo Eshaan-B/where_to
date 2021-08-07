@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
-import 'package:where_to/screens/YourPlace.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
+import 'providers/auth.dart';
 import 'screens/AuthScreen.dart';
+import 'providers/placeProvider.dart';
 import 'screens/YourPlace.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -22,14 +25,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "WhereTo?",
-      home: AuthScreen(),
-      routes: {
-        //add routes to your pages here
-
-
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Places(),
+        ),
+      ],
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: "WhereTo?",
+          home: auth.isAuthenticated ? YourPlace() : AuthScreen(),
+          routes: {
+            //add routes to your pages here
+            AuthScreen.routeName: (ctx) => AuthScreen(),
+            YourPlace.routeName: (ctx) => YourPlace(),
+          },
+        ),
+      ),
     );
   }
 }

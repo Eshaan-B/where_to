@@ -1,7 +1,7 @@
 //import 'dart:math';
 import 'package:flutter/material.dart';
-
-enum AuthMode { Signup, Login }
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -40,8 +40,7 @@ class AuthScreen extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(bottom: 20.0),
                       padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 90.0),
-
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 90.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.deepOrange.shade900,
@@ -59,7 +58,6 @@ class AuthScreen extends StatelessWidget {
                           fontSize: 30,
                           fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,
-
                         ),
                       ),
                     ),
@@ -89,9 +87,8 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
-    'email': '',
+    'username': '',
     'password': '',
   };
   var _isLoading = false;
@@ -124,22 +121,18 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
+    await Provider.of<Auth>(context, listen: false)
+        .signIn(uname.text)
+        .catchError((onError) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("$onError")));
+    });
     setState(() {
       _isLoading = false;
     });
   }
 
-  void _switchAuthMode() {
-    if (_authMode == AuthMode.Login) {
-      setState(() {
-        _authMode = AuthMode.Signup;
-      });
-    } else {
-      setState(() {
-        _authMode = AuthMode.Login;
-      });
-    }
-  }
+  TextEditingController uname = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -150,9 +143,8 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
-        constraints:
-        BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+        height: 260,
+        constraints: BoxConstraints(minHeight: 270),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -161,17 +153,16 @@ class _AuthCardState extends State<AuthCard> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
+                  controller: uname,
+                  decoration: InputDecoration(labelText: 'Enter username'),
                   validator: (value) {
-                    if (value==null || value.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
+                    if (value == null || value.isEmpty) {
+                      return 'Invalid username!';
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    if(value!=null)
-                    _authData['email'] = value;
+                    if (value != null) _authData['username'] = value;
                   },
                 ),
                 TextFormField(
@@ -179,29 +170,15 @@ class _AuthCardState extends State<AuthCard> {
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
-                    if (value==null || value.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
+                    if (value == null || value.isEmpty) {
+                      return 'Invalid password';
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    if(value!=null)
-                    _authData['password'] = value;
+                    if (value != null) _authData['password'] = value;
                   },
                 ),
-                if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                      if (value != _passwordController.text) {
-                        return 'Passwords do not match!';
-                      }
-                    }
-                        : null,
-                  ),
                 SizedBox(
                   height: 20,
                 ),
@@ -211,18 +188,23 @@ class _AuthCardState extends State<AuthCard> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         padding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0))),
-                    child:
-                    Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                    child: Text('LOGIN'),
                     onPressed: _submit,
                   ),
-                TextButton(
-                  child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
-                  onPressed: _switchAuthMode,
+                SizedBox(
+                  height: 10,
                 ),
+                Text(
+                  "Anonymouos login is enabled. You can sign in with any username and password",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                )
               ],
             ),
           ),
