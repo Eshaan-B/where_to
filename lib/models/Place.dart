@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
 
-class Place with ChangeNotifier {
+class Place{
   double latitude;
   double longitude;
   String staticMap;
