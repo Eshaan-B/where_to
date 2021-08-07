@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:where_to/screens/Dashboard.dart';
 import 'providers/auth.dart';
 import 'screens/AuthScreen.dart';
 import 'providers/placeProvider.dart';
 import 'screens/YourPlace.dart';
+import 'screens/Feed.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,11 +39,13 @@ class MyApp extends StatelessWidget {
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
           title: "WhereTo?",
-          home: auth.isAuthenticated ? YourPlace() : AuthScreen(),
+          home: auth.isAuthenticated ? Dashboard() : AuthScreen(),
           routes: {
             //add routes to your pages here
+            Dashboard.routeName: (ctx) => Dashboard(),
             AuthScreen.routeName: (ctx) => AuthScreen(),
             YourPlace.routeName: (ctx) => YourPlace(),
+            Feed.routeName:(ctx)=>Feed(),
           },
         ),
       ),

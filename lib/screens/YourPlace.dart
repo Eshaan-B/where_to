@@ -27,7 +27,7 @@ class _YourPlaceState extends State<YourPlace> {
       });
       String name = nameController.text;
 //      final description = descriptionController.value;
-      String uname=Provider.of<Auth>(context, listen: false).getUsername;
+      String uname = Provider.of<Auth>(context, listen: false).getUsername;
       Place newPlace = Place(
         locationName: name,
         latitude: 100.0,
@@ -49,8 +49,9 @@ class _YourPlaceState extends State<YourPlace> {
         title: Text("Add location"),
         centerTitle: true,
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(8.0),
+        height: MediaQuery.of(context).size.height - 100,
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             child: Column(
@@ -69,8 +70,7 @@ class _YourPlaceState extends State<YourPlace> {
                   maxLength: 20,
                 ),
                 SizedBox(
-                  width: 20,
-                  height: 250,
+                  height: 30,
                 ),
                 Image.network(
                   'https://d32ogoqmya1dw8.cloudfront.net/images/sp/library/google_earth/google_maps_hello_world.jpg',
