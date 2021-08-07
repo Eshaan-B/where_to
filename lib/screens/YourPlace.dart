@@ -17,6 +17,10 @@ class YourPlace extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(
+                  height: 20,
+                  width: 20
+              ),
               TextField(
                 decoration: InputDecoration(
                     hintText: "Your location ",
@@ -29,13 +33,37 @@ class YourPlace extends StatelessWidget {
                 maxLength: 20,
         ),
               SizedBox(
-                width: 20,
-                height: 250,
+                  height: 30,
+                  width: 20
               ),
-
-
+          TextField(
+            decoration: InputDecoration(
+                hintText: "Description ",
+                labelText: "Description Of Your Location",
+                labelStyle: TextStyle(fontSize: 14, color: Colors.black),
+                border: InputBorder.none,
+                fillColor: Colors.black12,
+                filled: true),
+          obscureText: false,
+          maxLength: 20,
+        ),
+              SizedBox(
+                  height: 20,
+                  width: 20
+              ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Upload', style: TextStyle(fontSize: 20)),
+          ),
+          SizedBox(
+            height: 50,
+            width: 20
+          ),
                 Image.network('https://d32ogoqmya1dw8.cloudfront.net/images/sp/library/google_earth/google_maps_hello_world.jpg'),
-
+              SizedBox(
+                  height: 20,
+                  width: 20
+              ),
                 Row(
               children: [
                 Align(
