@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
-
+import 'package:where_to/screens/YourPlace.dart';
 import 'screens/AuthScreen.dart';
-
+import 'screens/YourPlace.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       home: AuthScreen(),
       routes: {
         //add routes to your pages here
+
 
       },
     );
