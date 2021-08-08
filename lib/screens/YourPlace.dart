@@ -5,6 +5,7 @@ import '../providers/auth.dart';
 import '../models/Place.dart';
 import 'package:provider/provider.dart';
 import '../providers/placeProvider.dart';
+import 'package:location/location.dart';
 
 class YourPlace extends StatefulWidget {
   static const routeName = '/YourPlace';
@@ -15,6 +16,35 @@ class YourPlace extends StatefulWidget {
 
 class _YourPlaceState extends State<YourPlace> {
   bool isLoading = false;
+
+  void getLocation() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        print("Service isn't enabled");
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      print("Permission denied");
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    print(_locationData);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +126,7 @@ class _YourPlaceState extends State<YourPlace> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                        onPressed: () {}, child: Text("Grab my location")),
+                        onPressed: getLocation, child: Text("Grab my location")),
                     SizedBox(
                       width: 16,
                     ),

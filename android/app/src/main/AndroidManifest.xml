@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.where_to">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
    <application
         android:label="where_to"
         android:icon="@mipmap/ic_launcher">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyAP0dz5jt7cOE74YP89fejiLm7qBd769k0"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -37,7 +41,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-       <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyAP0dz5jt7cOE74YP89fejiLm7qBd769k0"/>
-    </application>
+   </application>
 </manifest>
