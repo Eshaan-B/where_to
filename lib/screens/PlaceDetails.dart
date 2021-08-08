@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:async';
 import '../models/Place.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PlaceDetails extends StatefulWidget {
   static const routeName = "/placeDetails";
@@ -13,84 +15,57 @@ class PlaceDetails extends StatefulWidget {
 
 class _PlaceDetailsState extends State<PlaceDetails> {
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
     Place place = ModalRoute.of(context)!.settings.arguments as Place;
-    //place.userName
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
-      color: Colors.white,
-      child: Column(
+    Completer<GoogleMapController> _controller = Completer();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${place.userName}\'s travel'),
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(8),
         children: [
-          Text('${place.userName}`s Places',
-            style: TextStyle(fontSize: 28,
-                decoration: TextDecoration.none,
-            color: Colors.black),
-
-          ),
-          SizedBox(
-            height: 30,
-            width: 30
-          ),
           Container(
-            color: Colors. lightBlue,
-            padding: EdgeInsets.fromLTRB(30.0, 250.0, 0.0, 0.0),
-            margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-
+              width: double.infinity,
+              height: 300,
+              child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(place.latitude, place.longitude),
+                      zoom: 12))),
+          Text(
+            'Place visited:',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(
-              height: 30,
-              width: 30
+            height: 10,
           ),
-          Text('Description of ${place.locationName}',
-            style: TextStyle(fontSize: 28,
-                decoration: TextDecoration.none,
-                color: Colors.black),
-          ),
-          SizedBox(
-              height: 30,
-              width: 30
-          ),
-          Text('${place.description}',
-            style: TextStyle(fontSize: 18,
-                decoration: TextDecoration.none,
-                color: Colors.black),
+          Text('${place.locationName}', style: TextStyle(fontSize: 15)),
+          Divider(),
+          Text(
+            '${place.userName}\'s Experience',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           SizedBox(
-              height: 30,
-              width: 30
+            height: 10,
           ),
-          Text('Images of ${place.locationName}',
-            style: TextStyle(fontSize: 28,
-                decoration: TextDecoration.none,
-                color: Colors.black),
+          Text('${place.description}', style: TextStyle(fontSize: 15)),
+          Divider(),
+          Text(
+            'Coordinates :',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          Row(
-            children: [
-              Container(
-                color: Colors. lightBlue,
-                margin: const EdgeInsets.all(20.0),
-                width: 160.0,
-                height: 140.0,
-
-              ),
-
-              Container(
-                color: Colors. lightBlue,
-                margin: const EdgeInsets.all(10.0),
-                width: 160.0,
-                height: 140.0,
-
-              ),
-            ],
-          )
-
-
-
+          SizedBox(
+            height: 10,
+          ),
+          Text(' Latitude: ${place.latitude} \n Longitude: ${place.longitude}',
+              style: TextStyle(fontSize: 15)),
         ],
       ),
-
-
     );
   }
 }

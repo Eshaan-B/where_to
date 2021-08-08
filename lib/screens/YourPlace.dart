@@ -6,6 +6,7 @@ import '../models/Place.dart';
 import 'package:provider/provider.dart';
 import '../providers/placeProvider.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
 
 class YourPlace extends StatefulWidget {
   static const routeName = '/YourPlace';
@@ -16,8 +17,23 @@ class YourPlace extends StatefulWidget {
 
 class _YourPlaceState extends State<YourPlace> {
   bool isLoading = false;
+  bool isLocationLoading = false;
+  double? lat = 0;
+  double? long = 0;
+  void getStaticMap() async {
+    final url = Uri.parse(
+      'https://maps.googleapis.com/maps/api/staticmap?center={$lat,$long}&size=400x400&zoom=15&key=AIzaSyAP0dz5jt7cOE74YP89fejiLm7qBd769k0',
+    );
 
+    final res = await http.get(url).catchError((err) {
+      print(err);
+    });
+    print(res);
+  }
   void getLocation() async {
+    setState(() {
+      isLocationLoading = true;
+    });
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -40,16 +56,23 @@ class _YourPlaceState extends State<YourPlace> {
       if (_permissionGranted != PermissionStatus.granted) {
         return;
       }
+      getStaticMap();
     }
 
     _locationData = await location.getLocation();
-    print(_locationData);
+    lat = _locationData.latitude;
+    long = _locationData.longitude;
+    setState(() {
+      isLocationLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
+
+
 
     void _submit() async {
       setState(() {
@@ -60,17 +83,22 @@ class _YourPlaceState extends State<YourPlace> {
       if (name == "" || description == "") {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Please fill all the fields')));
+        setState(() {
+          isLoading = false;
+        });
         return;
       }
-      String uname = Provider.of<Auth>(context, listen: false).getUsername;
+      String uname = Provider
+          .of<Auth>(context, listen: false)
+          .getUsername;
       Place newPlace = Place(
         description: description,
         locationName: name,
-        latitude: 100.0,
-        longitude: 100.0,
+        latitude: lat!,
+        longitude: long!,
         userName: uname,
         staticMap:
-            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.wired.com%2F2016%2F11%2Fuse-google-maps-plan-awesome-vacation%2F&psig=AOvVaw3BQwYMItPstnHoa3NY46dL&ust=1628438730466000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLjcnpOln_ICFQAAAAAdAAAAABAD",
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.wired.com%2F2016%2F11%2Fuse-google-maps-plan-awesome-vacation%2F&psig=AOvVaw3BQwYMItPstnHoa3NY46dL&ust=1628438730466000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLjcnpOln_ICFQAAAAAdAAAAABAD",
         date: DateTime.now(),
       );
 
@@ -86,13 +114,16 @@ class _YourPlaceState extends State<YourPlace> {
         backgroundColor: Colors.blue,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(15),
-          bottomLeft: Radius.circular(15),
-        )),
+              bottomRight: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+            )),
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),
-        height: MediaQuery.of(context).size.height - 100,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height - 100,
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             child: Column(
@@ -125,19 +156,27 @@ class _YourPlaceState extends State<YourPlace> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                        onPressed: getLocation, child: Text("Grab my location")),
+                    isLocationLoading
+                        ? CircularProgressIndicator()
+                        : ElevatedButton(
+                        onPressed: getLocation,
+                        child: Text("Grab my location")),
                     SizedBox(
                       width: 16,
                     ),
                     isLoading
                         ? CircularProgressIndicator()
                         : ElevatedButton(
-                            onPressed: _submit,
-                            child: Text("Post!"),
-                          )
+                      onPressed: _submit,
+                      child: Text("Post!"),
+                    )
                   ],
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                if (!(lat == 0 && long == 0))
+                  Text('Your coordinates: $lat , $long')
               ],
             ),
           ),
