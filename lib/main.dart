@@ -8,7 +8,7 @@ import 'providers/placeProvider.dart';
 import 'screens/YourPlace.dart';
 import 'screens/Feed.dart';
 import 'screens/ProfilePage.dart';
-
+import 'screens/PlaceDetails.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -49,6 +49,8 @@ class MyApp extends StatelessWidget {
             YourPlace.routeName: (ctx) => YourPlace(),
             Feed.routeName: (ctx) => Feed(),
             ProfilePage.routeName: (ctx) => ProfilePage(),
+            PlaceDetails.routeName: (ctx)=>PlaceDetails(),
+
           },
         ),
       ),

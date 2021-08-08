@@ -27,6 +27,11 @@ class _YourPlaceState extends State<YourPlace> {
       });
       String name = nameController.text;
       final description = descriptionController.text;
+      if (name == "" || description == "") {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Please fill all the fields')));
+        return;
+      }
       String uname = Provider.of<Auth>(context, listen: false).getUsername;
       Place newPlace = Place(
         description: description,

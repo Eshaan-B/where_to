@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../models/Place.dart';
+
 class PlaceDetails extends StatefulWidget {
+  static const routeName = "/placeDetails";
+
   const PlaceDetails({Key? key}) : super(key: key);
 
   @override
@@ -10,6 +14,11 @@ class PlaceDetails extends StatefulWidget {
 class _PlaceDetailsState extends State<PlaceDetails> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    Place place = ModalRoute.of(context)!.settings.arguments as Place;
+    //place.userName
+
+    return Container(
+      child: Text('${place.userName}'),
+    );
   }
 }
