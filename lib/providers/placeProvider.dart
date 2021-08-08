@@ -31,7 +31,7 @@ class Places with ChangeNotifier {
               latitude: placeData['latitude'],
               longitude: placeData['longitude'],
               userName: placeData['userName'],
-              staticMap: placeData['staticMap'],
+              staticMap: "https://staticmapmaker.com/img/google@2x.png",
               locationName: placeData['locationName'],
             ),
           );
