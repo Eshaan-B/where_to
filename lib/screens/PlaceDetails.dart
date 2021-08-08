@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import '../models/Place.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PlaceDetails extends StatefulWidget {
   static const routeName = "/placeDetails";
@@ -21,8 +19,6 @@ class _PlaceDetailsState extends State<PlaceDetails> {
   Widget build(BuildContext context) {
     Place place = ModalRoute.of(context)!.settings.arguments as Place;
 
-    Completer<GoogleMapController> _controller = Completer();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('${place.userName}\'s travel'),
@@ -31,12 +27,10 @@ class _PlaceDetailsState extends State<PlaceDetails> {
         padding: EdgeInsets.all(8),
         children: [
           Container(
-              width: double.infinity,
-              height: 300,
-              child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(place.latitude, place.longitude),
-                      zoom: 12))),
+            width: double.infinity,
+            height: 300,
+            child: Image.network(place.staticMap),
+          ),
           Text(
             'Place visited:',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
