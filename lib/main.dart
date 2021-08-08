@@ -7,6 +7,7 @@ import 'screens/AuthScreen.dart';
 import 'providers/placeProvider.dart';
 import 'screens/YourPlace.dart';
 import 'screens/Feed.dart';
+import 'screens/ProfilePage.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
             Dashboard.routeName: (ctx) => Dashboard(),
             AuthScreen.routeName: (ctx) => AuthScreen(),
             YourPlace.routeName: (ctx) => YourPlace(),
-            Feed.routeName:(ctx)=>Feed(),
+            Feed.routeName: (ctx) => Feed(),
+            ProfilePage.routeName: (ctx) => ProfilePage(),
           },
         ),
       ),

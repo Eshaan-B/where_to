@@ -1,12 +1,50 @@
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'auth.dart';
 import '../models/Place.dart';
 
 class Places with ChangeNotifier {
   List<Place> _placeList = [];
+
+  List<Place> get placeList {
+    return [..._placeList];
+  }
+
+  bool get isEmpty {
+    return _placeList.isEmpty;
+  }
+
+  Future<void> fetchAndSetPlaces() async {
+    final url = Uri.parse(
+        'https://whereto-d2421-default-rtdb.firebaseio.com/places.json');
+    try {
+      final res = await http.get(url);
+      final extractedData = json.decode(res.body);
+      print(extractedData);
+      final List<Place> _loadedPlaces = [];
+      if (extractedData != null) {
+        extractedData.forEach((placeId, placeData) {
+          _loadedPlaces.add(
+            Place(
+              date: DateTime.parse(placeData['date']),
+              latitude: placeData['latitude'],
+              longitude: placeData['longitude'],
+              userName: placeData['userName'],
+              staticMap: placeData['staticMap'],
+              locationName: placeData['locationName'],
+            ),
+          );
+        });
+        _placeList=_loadedPlaces;
+        notifyListeners();
+      }
+
+    } catch (err) {
+      print("Error occured while fetching places:");
+      print(err);
+      throw err;
+    }
+  }
 
   Future<void> addPlace(Place place) async {
     final url = Uri.parse(
@@ -20,7 +58,7 @@ class Places with ChangeNotifier {
           'date': place.date.toIso8601String(),
           'staticMap': place.staticMap,
           'userName': place.userName,
-          'name':place.locationName
+          'locationName': place.locationName
         }),
       );
       final res = json.decode(extractedData.body);
