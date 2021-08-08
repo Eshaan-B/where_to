@@ -18,14 +18,20 @@ class ProfilePage extends StatelessWidget {
           width: double.infinity,
         ),
         CircleAvatar(
-          backgroundColor: Colors.green,
+          backgroundImage: AssetImage('assets/user.jpg'),
           radius: 70,
         ),
+        //backgroundImage: AssetImage(''),
+        // backgroundColor: Colors.green,
+
         SizedBox(
           height: 80,
         ),
         Text(
-            "Your username: ${Provider.of<Auth>(context, listen: false).getUsername}")
+            "Your username: ${Provider.of<Auth>(context, listen: false).getUsername}"),
+        Container(
+          decoration: new BoxDecoration(color: Colors.cyanAccent),
+        )
       ],
     );
   }
