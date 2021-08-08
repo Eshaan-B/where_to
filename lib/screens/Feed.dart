@@ -50,109 +50,117 @@ class _FeedState extends State<Feed> {
           bottomLeft: Radius.circular(15),
         )),
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: placeList.length,
-              itemBuilder: (ctx, index) {
-                DateTime date = placeList[index].date;
-                final format = DateFormat.jm(); //"6:00 AM"
-                final time = format.format(date);
+      body: placeList.length == 0
+          ? Center(
+              child: Text('Feed is empty!'),
+            )
+          : isLoading
+              ? Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: placeList.length,
+                  itemBuilder: (ctx, index) {
+                    DateTime date = placeList[index].date;
+                    final format = DateFormat.jm(); //"6:00 AM"
+                    final time = format.format(date);
 
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  height: 200,
-                  child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
+                    return Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      height: 200,
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${placeList[index].userName}',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "Uploaded at $time",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Location:',
+                                    '${placeList[index].userName}',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Uploaded at $time",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Location:',
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${placeList[index].locationName}',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '${placeList[index].userName}\'s experience:',
                                     style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    '${placeList[index].locationName}',
-                                    style:
-                                        TextStyle(fontStyle: FontStyle.italic),
+                                  Flexible(
+                                    child: Text(
+                                      "${placeList[index].description}",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          color: Colors.blueGrey,
+                                          fontSize: 15,
+                                          fontStyle: FontStyle.italic),
+                                    ),
                                   ),
                                 ],
                               ),
-                              Text(
-                                '${placeList[index].userName}\'s experience:',
-                                style: TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold),
+                              VerticalDivider(
+                                thickness: 1.5,
                               ),
-                              Flexible(
-                                child: Text(
-                                  "Lorem ipsum dolor sit amet ",
-                                  softWrap: true,
-                                  style: TextStyle(
-                                      color: Colors.blueGrey,
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                              ),
-                            ],
-                          ),
-                          VerticalDivider(
-                            thickness: 1.5,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                      'https://img.traveltriangle.com/blog/wp-content/tr:w-700,h-400/uploads/2015/06/Catherine-waterfalls-in-Coonoor.jpg',
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                          'https://img.traveltriangle.com/blog/wp-content/tr:w-700,h-400/uploads/2015/06/Catherine-waterfalls-in-Coonoor.jpg',
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  )
+                                ],
                               )
                             ],
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              },
-            ),
+                    );
+                  },
+                ),
     );
   }
 }

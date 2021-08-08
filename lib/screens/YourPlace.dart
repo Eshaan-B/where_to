@@ -19,16 +19,17 @@ class _YourPlaceState extends State<YourPlace> {
   @override
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController();
-    TextEditingController descriptionController = new TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
 
     void _submit() async {
       setState(() {
         isLoading = true;
       });
       String name = nameController.text;
-//      final description = descriptionController.value;
+      final description = descriptionController.text;
       String uname = Provider.of<Auth>(context, listen: false).getUsername;
       Place newPlace = Place(
+        description: description,
         locationName: name,
         latitude: 100.0,
         longitude: 100.0,
@@ -72,7 +73,7 @@ class _YourPlaceState extends State<YourPlace> {
                   maxLength: 20,
                 ),
                 TextField(
-                  controller: nameController,
+                  controller: descriptionController,
                   decoration: InputDecoration(
                     labelText: "How was your experience?",
                     labelStyle: TextStyle(fontSize: 14, color: Colors.black),

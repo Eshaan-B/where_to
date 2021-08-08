@@ -26,6 +26,7 @@ class Places with ChangeNotifier {
         extractedData.forEach((placeId, placeData) {
           _loadedPlaces.add(
             Place(
+              description: placeData['description'],
               date: DateTime.parse(placeData['date']),
               latitude: placeData['latitude'],
               longitude: placeData['longitude'],
@@ -53,6 +54,7 @@ class Places with ChangeNotifier {
       final extractedData = await http.post(
         url,
         body: json.encode({
+          'description':place.description,
           'latitude': place.latitude,
           'longitude': place.longitude,
           'date': place.date.toIso8601String(),
