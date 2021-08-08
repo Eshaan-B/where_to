@@ -17,21 +17,10 @@ class ProfilePage extends StatelessWidget {
         SizedBox(
           width: double.infinity,
         ),
-        ClipOval(
-            child: Image.network(
-          "url.jpg",
-          fit: BoxFit.cover,
-          width: 90.0,
-          height: 90.0,
-        )),
-        // CircleAvatar(
-        //   backgroundImage: ExactAssetImage('assets/user.jpg'),
-        //   minRadius: 30,
-        //   maxRadius: 70,
-        // ),
-        //backgroundImage: AssetImage(''),
-        // backgroundColor: Colors.green,
-
+        CircleAvatar(
+          backgroundImage: AssetImage('assets/user.jpg'),
+          radius: 50,
+        ),
         SizedBox(
           height: 80,
         ),
