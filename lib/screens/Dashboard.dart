@@ -32,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
             Icon(Icons.add),
             Icon(Icons.person),
           ],
-          buttonBackgroundColor: Colors.greenAccent,
+          buttonBackgroundColor: Colors.blueAccent,
           color: Colors.blue,
           backgroundColor: Colors.white,
           animationDuration: Duration(milliseconds: 250),

@@ -1,6 +1,6 @@
 
 class Place{
-  //String description;
+  String description;
   String locationName;
   double latitude;
   double longitude;
@@ -14,7 +14,7 @@ class Place{
     required this.userName,
     required this.staticMap,
     required this.date,
-  //  required this.description,
+    required this.description,
     required this.locationName
   });
 }
