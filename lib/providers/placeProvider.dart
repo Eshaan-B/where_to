@@ -35,7 +35,7 @@ class Places with ChangeNotifier {
             ),
           );
         });
-        _placeList=_loadedPlaces;
+        _placeList=_loadedPlaces.reversed.toList();
         notifyListeners();
       }
 

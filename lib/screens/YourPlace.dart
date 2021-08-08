@@ -46,8 +46,13 @@ class _YourPlaceState extends State<YourPlace> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add location"),
-        centerTitle: true,
+        title: Text('Add location'),
+        backgroundColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+        )),
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),
@@ -59,15 +64,21 @@ class _YourPlaceState extends State<YourPlace> {
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    hintText: "Your location ",
-                    labelText: "Enter you location name",
+                    labelText: "Name of this place",
                     labelStyle: TextStyle(fontSize: 14, color: Colors.black),
                     border: InputBorder.none,
-                    //fillColor: Colors.black12,
                     filled: true,
                   ),
-                  obscureText: false,
                   maxLength: 20,
+                ),
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: "How was your experience?",
+                    labelStyle: TextStyle(fontSize: 14, color: Colors.black),
+                    border: InputBorder.none,
+                    filled: true,
+                  ),
                 ),
                 SizedBox(
                   height: 30,
@@ -76,7 +87,7 @@ class _YourPlaceState extends State<YourPlace> {
                   'https://d32ogoqmya1dw8.cloudfront.net/images/sp/library/google_earth/google_maps_hello_world.jpg',
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
                         onPressed: () {}, child: Text("Grab my location")),
@@ -87,7 +98,7 @@ class _YourPlaceState extends State<YourPlace> {
                         ? CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: _submit,
-                            child: Text("Submit"),
+                            child: Text("Post!"),
                           )
                   ],
                 ),

@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: "WhereTo?",
           home: auth.isAuthenticated ? Dashboard() : AuthScreen(),
           routes: {
